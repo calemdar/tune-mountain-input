@@ -1,5 +1,8 @@
-# Tune-Mountain-input
+# Tune Mountain Input Manager
 Input Manager for Tune Mountain game. Packages and emits input actions through an observable.
+
+If you're looking on modifying / testing the code locally, please see **[Modifying and Running Source Code Locally
+](./docs/ModifyingSourceCode.MD)** for details on how to do that.
 
 ### Installation
 #### Local repository:
