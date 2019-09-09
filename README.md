@@ -46,6 +46,10 @@ manager.bindAction('a', 'Action2');
 // reset bindings to an array of new actions
 manager.setBinding('a', ['Action3']);
 // if the key 'a' is pressed, only 'Action3' will be emitted
+
+// to unbind an action simply run
+manager.setBinding('a', null);
+// if the key 'a' is pressed, nothing will be emitted
 ```
 
 In order to handle an action event you may create an observer by subscribing to the action observable. See example
