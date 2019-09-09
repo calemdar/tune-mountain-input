@@ -1,0 +1,15 @@
+html {
+    background: cornsilk;
+}
+
+.container {
+    margin: 4em;
+}
+
+#input-manager-insertion {
+    margin: 2em;
+    border: black solid 2px;
+    height: 25vw;
+    width: 50%;
+    background-color: aliceblue;
+}
