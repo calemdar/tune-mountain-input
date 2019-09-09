@@ -7,14 +7,6 @@ that is emitted when a button is pressed.
 An event will contain an array of actions (Strings) and a key that was bound to it at
 the time the action was performed. The event also contains the timestamp of when said action was performed.
 
-This class has the following fields that can be publicly accessed:
-     actions: Array<String>  -> actions that are being done
-     boundKey: String        -> key bound to said actions that was pressed
-     type: String            -> either "up" or "down"
-     timestamp: Date         -> when key was pressed (optional)
-     sessionID: String       -> Identifier for the current play session (optional)
-     userID: String          -> Identifier for use (Spotify in Tune Mountain) (optional)
-
 **Kind**: global class  
 
 * [ActionEvent](#ActionEvent)
