@@ -4,8 +4,17 @@
  *
  * An event will contain an array of actions (Strings) and a key that was bound to it at
  * the time the action was performed. The event also contains the timestamp of when said action was performed.
+ *
+ * This class has the following fields that can be publicly accessed:
+ *      actions: Array<String>  -> actions that are being done
+ *      boundKey: String        -> key bound to said actions that was pressed
+ *      type: String            -> either "up" or "down"
+ *      timestamp: Date         -> when key was pressed (optional)
+ *      sessionID: String       -> Identifier for the current play session (optional)
+ *      userID: String          -> Identifier for use (Spotify in Tune Mountain) (optional)
  */
 class ActionEvent {
+
     /**
      * Instantiates an action event.
      *
@@ -34,13 +43,15 @@ class ActionEvent {
 
         // if required props aren't passed, throw error
         if (!actions || !boundKey || !type) {
-            throw new Error("No 'actions', 'boundKey', or 'type' passed to ActionEvent during instantiation!");
+            throw new Error('No \'actions\', \'boundKey\', or \'type\' passed to ActionEvent during instantiation!');
         }
 
         // set current date if no timestamp is passed
-        if (!timestamp) {
+        if (timestamp) {
+            this._timestamp = timestamp;
+        } else {
             this._timestamp = new Date();
-        } else this._timestamp = timestamp;
+        }
 
         // assign to object properties
         this._actions = actions;
@@ -114,13 +125,13 @@ class ActionEvent {
      * @returns {string}
      */
     toString() {
-        return (`ActionEvent: {
+        return `ActionEvent: {
     'type': ${this._type}
     'actions': ${this._actions}
     'timestamp': ${this._timestamp}
     'userID': ${this._userID}
     'sessionID': ${this._sessionID}
-}`)
+}`
     }
 
 }

@@ -80,11 +80,15 @@ ActionEvent: {
 
 ```
 
-Please see [ActionEvent.js](./src/utils/ActionEvent.js) for reference of how to access the fields inside the
+Please see [ActionEvent.js](./src/utils/ActionEvent.js) or [ActionEvent.js documentation](./docs/src/ActionEvent.MD) for reference of
+ how to
+ access the fields inside the
  `ActionEvent` object that is emitted by the observable.
  
 **Note**: You may also initialize the input manager with a series of bindings and 
-a `userID` and `sessionID` values for identification. See [Manager.js](./src/Manager.js) for details on the
+a `userID` and `sessionID` values for identification. See [Manager.js](./src/Manager.js) or [Manager.js documentation](./docs/src/Manager.MD) for details on the
  documentation.
+ 
+##### [More Documentation Here](./docs/src/)
  
 _Written by [Léo Gonsalves](https://github.com/lcgonsalves)_

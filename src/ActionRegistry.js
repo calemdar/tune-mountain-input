@@ -35,7 +35,7 @@ class ActionRegistry {
      * @see checkBindingOf()
      * @param {String} keyValue value of key, described in
      * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param {String || Array<String>}actionOrActionArray a string describing the action, or an array of strings.
+     * @param {Array<String>} actionOrActionArray a string or an array of strings describing the action
      */
     bindActionToKey(keyValue, actionOrActionArray) {
 

@@ -102,7 +102,7 @@ class Manager {
      * to it, it appends the action to the existing actions.
      *
      * @param {String} key the value of a key as defined in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param {String || Array<String>} action one or more actions to be bound
+     * @param {Array<String>} action one (String) or more (Array<String>) actions to be bound to the key
      */
     bindAction(key, action) {
 
