@@ -64,6 +64,7 @@ class ActionEvent {
 
     /**
      * Returns an array of actions performed.
+     * @returns {Array<String>} all actions performed
      */
     get actions() {
         return this._actions;
@@ -71,6 +72,7 @@ class ActionEvent {
 
     /**
      * Returns a String representing the key bound to the actions performed at time of usage
+     * @returns {String} a key value
      */
     get boundKey() {
         return this._boundKey;
@@ -78,6 +80,7 @@ class ActionEvent {
 
     /**
      * Returns the type of key press (either 'up' or 'down', or as defined inside Manager.js)
+     * @returns {String} a type
      */
     get type() {
         return this._type;
@@ -85,6 +88,7 @@ class ActionEvent {
 
     /**
      * Returns a Date object. Represents the time and date the action was performed.
+     * @returns {Date}
      */
     get timestamp() {
         return this._timestamp;
@@ -92,6 +96,7 @@ class ActionEvent {
 
     /**
      * Returns the session ID where this action was performed.
+     * @returns {*}
      */
     get sessionID() {
         return this._sessionID;
@@ -107,6 +112,7 @@ class ActionEvent {
 
     /**
      * Returns the user ID of the user that performed the action.
+     * @returns {*}
      */
     get userID() {
         return this._userID;
@@ -122,7 +128,7 @@ class ActionEvent {
 
     /**
      * Converts to an easily readable string
-     * @returns {string}
+     * @returns {String}
      */
     toString() {
         return `ActionEvent: {

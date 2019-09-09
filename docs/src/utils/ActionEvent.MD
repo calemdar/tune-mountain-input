@@ -7,19 +7,21 @@ that is emitted when a button is pressed.
 An event will contain an array of actions (Strings) and a key that was bound to it at
 the time the action was performed. The event also contains the timestamp of when said action was performed.
 
+This class has the following fields that can be publicly accessed:
+
 **Kind**: global class  
 
 * [ActionEvent](#ActionEvent)
     * [new ActionEvent(properties)](#new_ActionEvent_new)
-    * [.actions](#ActionEvent+actions)
-    * [.boundKey](#ActionEvent+boundKey)
-    * [.type](#ActionEvent+type)
-    * [.timestamp](#ActionEvent+timestamp)
+    * [.actions](#ActionEvent+actions) ⇒ <code>Array.&lt;String&gt;</code>
+    * [.boundKey](#ActionEvent+boundKey) ⇒ <code>String</code>
+    * [.type](#ActionEvent+type) ⇒ <code>String</code>
+    * [.timestamp](#ActionEvent+timestamp) ⇒ <code>Date</code>
+    * [.sessionID](#ActionEvent+sessionID) ⇒ <code>\*</code>
     * [.sessionID](#ActionEvent+sessionID)
-    * [.sessionID](#ActionEvent+sessionID)
+    * [.userID](#ActionEvent+userID) ⇒ <code>\*</code>
     * [.userID](#ActionEvent+userID)
-    * [.userID](#ActionEvent+userID)
-    * [.toString()](#ActionEvent+toString) ⇒ <code>string</code>
+    * [.toString()](#ActionEvent+toString) ⇒ <code>String</code>
 
 <a name="new_ActionEvent_new"></a>
 
@@ -43,31 +45,34 @@ Optional properties may be added using setter functions, with the exception of t
 
 <a name="ActionEvent+actions"></a>
 
-### actionEvent.actions
+### actionEvent.actions ⇒ <code>Array.&lt;String&gt;</code>
 Returns an array of actions performed.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
+**Returns**: <code>Array.&lt;String&gt;</code> - all actions performed  
 <a name="ActionEvent+boundKey"></a>
 
-### actionEvent.boundKey
+### actionEvent.boundKey ⇒ <code>String</code>
 Returns a String representing the key bound to the actions performed at time of usage
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
+**Returns**: <code>String</code> - a key value  
 <a name="ActionEvent+type"></a>
 
-### actionEvent.type
+### actionEvent.type ⇒ <code>String</code>
 Returns the type of key press (either 'up' or 'down', or as defined inside Manager.js)
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
+**Returns**: <code>String</code> - a type  
 <a name="ActionEvent+timestamp"></a>
 
-### actionEvent.timestamp
+### actionEvent.timestamp ⇒ <code>Date</code>
 Returns a Date object. Represents the time and date the action was performed.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
 <a name="ActionEvent+sessionID"></a>
 
-### actionEvent.sessionID
+### actionEvent.sessionID ⇒ <code>\*</code>
 Returns the session ID where this action was performed.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
@@ -84,7 +89,7 @@ Defines the session ID for the current action.
 
 <a name="ActionEvent+userID"></a>
 
-### actionEvent.userID
+### actionEvent.userID ⇒ <code>\*</code>
 Returns the user ID of the user that performed the action.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
@@ -101,7 +106,7 @@ Sets an ID for the user that performed the action.
 
 <a name="ActionEvent+toString"></a>
 
-### actionEvent.toString() ⇒ <code>string</code>
+### actionEvent.toString() ⇒ <code>String</code>
 Converts to an easily readable string
 
 **Kind**: instance method of [<code>ActionEvent</code>](#ActionEvent)  
