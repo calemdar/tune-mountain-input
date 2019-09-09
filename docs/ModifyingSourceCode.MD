@@ -63,4 +63,4 @@ To run this server, either run `node ./localTesting/server.js` or `npm start`.
 1. Run `npm start` to serve static files
 
 
-_Written by [Léo Gonsalves](https://github.com/lcgonsalves)_
+_Written by [Léo Gonsalves](https://github.com/lcgonsalves), condensed from [this tutorial](https://www.sitepoint.com/using-es-modules/)_
