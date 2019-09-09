@@ -57,10 +57,14 @@ This essentially serves `index.html` and `bundle.js` whenever `localhost:4545` i
 
 To run this server, either run `node ./localTesting/server.js` or `npm start`.
 
+Then open `localhost:4545` in your browser of choice.
+
 ### TL;DR
 
 1. Run `npm run hot-reload` to update `js` files on the fly
 1. Run `npm start` to serve static files
+
+**Note:** Script may be different in Windows and Linux. See watchify documentation for more details.
 
 
 _Written by [Léo Gonsalves](https://github.com/lcgonsalves), condensed from [this tutorial](https://www.sitepoint.com/using-es-modules/)_
