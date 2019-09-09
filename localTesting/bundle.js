@@ -22896,9 +22896,10 @@ class Manager {
     /**
      * Attaches InputManager to a given DOMElement, or if none is passed,
      * attaches it to entire document.
-     * @param DOMElement the desired element
-     * @param bindings map of key values to an array of actions
-     * @param identifiers object containing the ids that will be used for this manager (i.e. userID, sessionID, etc)
+     * @param {Node} DOMElement the desired element
+     * @param {Object} bindings map of key values to an array of actions
+     * @param {Object} identifiers object containing the ids that will be used for this manager (i.e. userID, sessionID,
+     * etc)
      */
     constructor(DOMElement = document, bindings = {}, identifiers = {}) {
 
