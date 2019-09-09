@@ -29,12 +29,13 @@ This class has the following fields that can be publicly accessed:
 Instantiates an action event.
 
 Properties may contain:
-     actions: Array<String> -> actions that are being done
-     boundKey: String -> key bound to said actions that was pressed
-     type: String -> either "up" or "down"
-     timestamp: Date -> when key was pressed (optional)
-     sessionID: String -> Identifier for the current play session (optional)
-     userID: String -> Identifier for use (Spotify in Tune Mountain) (optional)
+
+     actions: Array<String>     // actions that are being done
+     boundKey: String           // key bound to said actions that was pressed
+     type: String               // either "up" or "down"
+     timestamp: Date            // when key was pressed (optional)
+     sessionID: String          // Identifier for the current play session (optional)
+     userID: String             // Identifier for use (Spotify in Tune Mountain) (optional)
 
 Optional properties may be added using setter functions, with the exception of the timestamp.
 
