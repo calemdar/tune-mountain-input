@@ -22784,31 +22784,26 @@ class ActionRegistry {
         // init button binding registry
         this.bindings = bindings;
 
-        // bind functions
-        this.addBindKeyTo = this.addBindKeyTo.bind(this);
-        this.setBindingTo = this.setBindingTo.bind(this);
     }
 
     /**
-     * Adds a key binding to a given action. If the action doesn't exist, then it
-     * creates that action and adds the key value.
-     *
-     * NOTE: This function doesn't check
-     * if the action is ALREADY bound to the key press.
+     * Adds a action to a key binding. If the key is not bound yet, then it
+     * adds key to register and binds action to it.
      *
      * @see setBindingTo()
      * @see checkBindingOf()
-     * @param actionOrActionArray a string describing the action, or an array of strings.
-     * @param keyValue value of key, described in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {String} keyValue value of key, described in
+     * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {String || Array<String>}actionOrActionArray a string describing the action, or an array of strings.
      */
-    addBindKeyTo(keyValue, actionOrActionArray) {
+    bindActionToKey(keyValue, actionOrActionArray) {
 
-        let binding = this.bindings[keyValue];
+        const binding = this.bindings[keyValue];
 
         // if doesn't exist, initialize
         if (!binding && !Array.isArray(binding)) {
 
-            binding = [];
+            this.bindings[keyValue] = [];
 
         } else if (binding && !Array.isArray(binding)) {
 
@@ -22817,15 +22812,16 @@ class ActionRegistry {
 
         }
 
-        if (Array.isArray(actionOrActionArray)) binding.push(...actionOrActionArray);
-        else binding.push(actionOrActionArray);
+        if (Array.isArray(actionOrActionArray)) this.bindings[keyValue].push(...actionOrActionArray);
+        else this.bindings[keyValue].push(actionOrActionArray);
 
     }
 
     /**
      * Replaces current binding with the action array
-     * @param keyValue value of key, described in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param actionArray an array of actions (Strings)
+     * @param keyValue {String} value of key, described in
+     * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param actionArray {Array} an array of actions (Strings)
      */
     setBindingTo(keyValue, actionArray) {
 
@@ -22860,19 +22856,15 @@ module.exports = ActionRegistry;
 
 },{}],454:[function(require,module,exports){
 // runs input manager on current browser window
+// this is the highest level script, and is equivalent to importing the whole module to a source file!
 const InputManager = require('../index');
 
-const inputManager = new InputManager(
-    document,
-    {
-        'a': ['Trick', 'DoAThing'],
-        ' ': ['Jump']
-    },
-    {
-        'userID': 'APerson1234',
-        'sessionID': 'ABC!@#ABC'
-    }
-);
+// instantiate
+const inputManager = new InputManager();
+
+// bind actions
+inputManager.bindAction('a', ['Walk', 'Bust A Nut']);
+inputManager.setBinding(' ', ['Jump']);
 
 console.log(inputManager);
 
@@ -22917,18 +22909,18 @@ class Manager {
         } = identifiers;
 
         // init action registry
-        const actionRegistry = new ActionRegistry(bindings);
+        this.actionRegistry = new ActionRegistry(bindings);
 
         // init observables for internal tracking of presses. only pipe the ones that are bound.
         const keyDown$ = Rx.Observable.fromEvent(DOMElement, 'keydown')
-            .filter( event => actionRegistry.isBound(event.key) )
+            .filter( event => this.actionRegistry.isBound(event.key) )
             .map( event => ({
                 key: event.key,
                 type: keyPressTypes.DOWN
             }));
 
         const keyUp$ = Rx.Observable.fromEvent(DOMElement, 'keyup')
-            .filter( event => actionRegistry.isBound(event.key) ).map( event => ({
+            .filter( event => this.actionRegistry.isBound(event.key) ).map( event => ({
                 key: event.key,
                 type: keyPressTypes.UP
             }));
@@ -22949,7 +22941,7 @@ class Manager {
 
                 // create action event
                 const evt = new ActionEvent({
-                    actions: actionRegistry.getActionsForKey(buttonEvent.key),
+                    actions: this.actionRegistry.getActionsForKey(buttonEvent.key),
                     boundKey: buttonEvent.key,
                     type: buttonEvent.type,
                     userID,
@@ -22975,6 +22967,32 @@ class Manager {
      */
     clear() {
         this._keyPressSubscription.unsubscribe();
+    }
+
+    /**
+     * Binds one or more actions to a given key. If key already has one or more actions bound
+     * to it, it appends the action to the existing actions.
+     *
+     * @param {String} key the value of a key as defined in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {String || Array<String>} action one or more actions to be bound
+     */
+    bindAction(key, action) {
+
+        this.actionRegistry.bindActionToKey(key, action);
+
+    }
+
+    /**
+     * Binds an array of actions to a given key.
+     * WARNING: this will erase all previous bindings.
+     *
+     * @param {String} key the value of a key as defined in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {Array<String>} actions an array of actions to be bound
+     */
+    setBinding(key, actions) {
+
+        this.actionRegistry.setBindingTo(key, actions)
+
     }
 
 }

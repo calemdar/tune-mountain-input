@@ -25,31 +25,26 @@ class ActionRegistry {
         // init button binding registry
         this.bindings = bindings;
 
-        // bind functions
-        this.addBindKeyTo = this.addBindKeyTo.bind(this);
-        this.setBindingTo = this.setBindingTo.bind(this);
     }
 
     /**
-     * Adds a key binding to a given action. If the action doesn't exist, then it
-     * creates that action and adds the key value.
-     *
-     * NOTE: This function doesn't check
-     * if the action is ALREADY bound to the key press.
+     * Adds a action to a key binding. If the key is not bound yet, then it
+     * adds key to register and binds action to it.
      *
      * @see setBindingTo()
      * @see checkBindingOf()
-     * @param actionOrActionArray a string describing the action, or an array of strings.
-     * @param keyValue value of key, described in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {String} keyValue value of key, described in
+     * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param {String || Array<String>}actionOrActionArray a string describing the action, or an array of strings.
      */
-    addBindKeyTo(keyValue, actionOrActionArray) {
+    bindActionToKey(keyValue, actionOrActionArray) {
 
-        let binding = this.bindings[keyValue];
+        const binding = this.bindings[keyValue];
 
         // if doesn't exist, initialize
         if (!binding && !Array.isArray(binding)) {
 
-            binding = [];
+            this.bindings[keyValue] = [];
 
         } else if (binding && !Array.isArray(binding)) {
 
@@ -58,15 +53,16 @@ class ActionRegistry {
 
         }
 
-        if (Array.isArray(actionOrActionArray)) binding.push(...actionOrActionArray);
-        else binding.push(actionOrActionArray);
+        if (Array.isArray(actionOrActionArray)) this.bindings[keyValue].push(...actionOrActionArray);
+        else this.bindings[keyValue].push(actionOrActionArray);
 
     }
 
     /**
      * Replaces current binding with the action array
-     * @param keyValue value of key, described in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param actionArray an array of actions (Strings)
+     * @param keyValue {String} value of key, described in
+     * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
+     * @param actionArray {Array} an array of actions (Strings)
      */
     setBindingTo(keyValue, actionArray) {
 
