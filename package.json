@@ -1,0 +1,37 @@
+{
+  "name": "tune-mountain-input-manager",
+  "version": "0.0.1",
+  "description": "Input manager for Tune Mountain game. Isolates input functionality from main game.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node localTesting/server.js && open http://localhost:4545",
+    "hot-reload": "watchify ./src/BrowserTestScript.js -o ./localTesting/bundle.js -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calemdar/tune-mountain-input.git"
+  },
+  "keywords": [
+    "rx",
+    "game",
+    "input-management"
+  ],
+  "author": "Léo Gonsalves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/calemdar/tune-mountain-input/issues"
+  },
+  "homepage": "https://github.com/calemdar/tune-mountain-input#readme",
+  "dependencies": {
+    "rxjs": "5.5.12"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "eslint": "^6.3.0",
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "jsdoc-to-markdown": "^5.0.1",
+    "path": "^0.12.7",
+    "watchify": "^3.11.1"
+  }
+}
