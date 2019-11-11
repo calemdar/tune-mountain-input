@@ -1,5 +1,5 @@
 // contains methods for emitting and handling specific states
-const {Subject} = require('rxjs');
+const {BehaviorSubject} = require('rxjs');
 const GAME_STATES = require('./utils/GameStateEnums');
 
 // packages a state into a message object for emission
@@ -16,8 +16,12 @@ const message = (state, body) => ({
 class GameStateController {
 
     constructor() {
-        this.notifier = new Subject();
-        this.controller = new Subject();
+        const initialMessage = message(GAME_STATES.IDLE, {
+            'message': 'Initial state.'
+        });
+
+        this.notifier = new BehaviorSubject(initialMessage);
+        this.controller = new BehaviorSubject(initialMessage);
 
         // keep track of subscriptions for efficient garbage collec.
         this.subscriptions = {
