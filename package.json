@@ -1,10 +1,10 @@
 {
   "name": "tune-mountain-input-manager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Input manager for Tune Mountain game. Isolates input functionality from main game.",
   "main": "index.js",
   "scripts": {
-    "start": "node localTesting/server.js && open http://localhost:4545",
+    "start": "browserify ./src/BrowserTestScript.js -o ./localTesting/bundle.js && node localTesting/server.js && open http://localhost:4545",
     "hot-reload": "watchify ./src/BrowserTestScript.js -o ./localTesting/bundle.js -v"
   },
   "repository": {
