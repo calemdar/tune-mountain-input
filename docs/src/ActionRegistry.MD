@@ -8,11 +8,13 @@ switched on the fly.
 
 Bindings should be in the form
 
+```js
 const actions = {
     "A": ["Jump", "Crouch"],
     " ": ["TrickOne"],
     ...
 }
+```
 
 Actions can have any name as long as they're CONSISTENT, since multiple
 buttons can have the same action. Button bindings **must** match the
