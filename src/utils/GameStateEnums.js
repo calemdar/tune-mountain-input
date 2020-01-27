@@ -4,7 +4,8 @@ const GameStateEnums = Object.freeze({
     'GENERATE': 'GENERATE',
     'PLAY': 'PLAY',
     'PAUSE': 'PAUSE',
-    'ERROR': 'ERROR'
+    'ERROR': 'ERROR',
+    'SCORE_CHANGED': 'SCORE_CHANGED'
 });
 
 module.exports = GameStateEnums;
