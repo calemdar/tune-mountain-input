@@ -99,7 +99,7 @@ Please see [ActionEvent.js](./src/utils/ActionEvent.js) or [ActionEvent.js docum
 **Note**: Action Events acquired from the [Action Event History](./docs/src/ActionHistory.MD) have a different meaning to the timestamp field -- the field represents the time elapsed since the song started. The timestamp acquired from the observable is simply the result of Date.now() run as soon as the key is pressed.
  
 **Note**: You may also initialize the input manager with a series of bindings and 
-a `userID` and `sessionID` values for identification. See [Manager.js](./src/Manager.js) or [Manager.js documentation](./docs/src/Manager.MD) for details on the
+a `userID` and `sessionID` values for identification. See [Manager.js](./src/Manager.js) or [Manager.js documentation](./docs/src/InputManager.MD) for details on the
  documentation.
  
 #### Game State Controller
