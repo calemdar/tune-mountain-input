@@ -39,7 +39,7 @@
 
     }, {'./src/GameStateController': 455,
         './src/Manager': 456,
-        './src/utils/GameStateEnums': 458}
+        './src/utils/GameStateEnums': 459}
 ],
 2: [
         function(require, module, exports) {
@@ -28084,6 +28084,8 @@
     ],
 454: [
         function(require, module, exports) {
+
+
         // runs input manager on current browser window
         // this is the highest level script, and is equivalent to importing the whole module to a source file!
         const {InputManager, GameStateController, GameStateEnums} = require('../index');
@@ -28106,29 +28108,62 @@
         // when action "request" is performed, emits appropriate state into the game state controller
         inputManager.getObservable()
             .filter(actionEvent => actionEvent.actions[0] === 'request' && actionEvent.type === 'press')
-            .subscribe(actionEvent => gameStateController.request(GameStateEnums.GENERATE, {
-                'actions performed': actionEvent.actions
-            }));
+            .subscribe(actionEvent => {
+                console.log('Request emitted!');
+                gameStateController.request(GameStateEnums.GENERATE, {
+                    'actions performed': actionEvent.actions
+                });
+            });
 
         // logs request when it is emitted
-        gameStateController.onRequestTo(GameStateEnums.GENERATE, request => console.log('Request', request));
+        gameStateController.onRequestTo(GameStateEnums.GENERATE, request => console.log('Request handled: ', request));
 
         // when action "notification" is performed, emits appropriate state into the game state controller
         inputManager.getObservable()
             .filter(actionEvent => actionEvent.actions[0] === 'notification' && actionEvent.type === 'press')
-            .subscribe(actionEvent => gameStateController.notify(GameStateEnums.GENERATE, {
-                'actions performed': actionEvent.actions
-            }));
+            .subscribe(actionEvent => {
+                console.log('Notification emitted!');
+                gameStateController.notify(GameStateEnums.GENERATE, {
+                    'actions performed': actionEvent.actions
+                });
+            });
+
+        // test action history
+        let time = 0;
+
+        inputManager.getObservable().subscribe(() => console.log('Real time', time));
+        let interval = setInterval(() => time += 10, 10);
+
+        inputManager.startSession();
+
+        console.log(inputManager.actionHistory);
+
+
+        // let it roll for a little bit
+
+        // pause
+        setTimeout(() => {
+                clearInterval(interval);
+                inputManager.pauseSession();
+                console.log('Paused!');
+            }, 5000);
+
+        // resume
+        setTimeout(() => {
+                interval = setInterval(() => time += 10, 10);
+                inputManager.resumeSession();
+                console.log('Resuming!');
+            }, 8000);
 
         // logs request when it is emitted
-        gameStateController.onNotificationOf(GameStateEnums.GENERATE, request => console.log('Notification', request));
+        gameStateController.onNotificationOf(GameStateEnums.GENERATE, request => console.log('Notification handled: ', request));
 
     }, {'../index': 1}
     ],
 455: [
         function(require, module, exports) {
         // contains methods for emitting and handling specific states
-        const {Subject} = require('rxjs');
+        const {BehaviorSubject} = require('rxjs');
         const GAME_STATES = require('./utils/GameStateEnums');
 
         // packages a state into a message object for emission
@@ -28145,8 +28180,12 @@
         class GameStateController {
 
                 constructor() {
-                this.notifier = new Subject();
-                this.controller = new Subject();
+                const initialMessage = message(GAME_STATES.IDLE, {
+                        'message': 'Initial state.'
+                    });
+
+                this.notifier = new BehaviorSubject(initialMessage);
+                this.controller = new BehaviorSubject(initialMessage);
 
                 // keep track of subscriptions for efficient garbage collec.
                 this.subscriptions = {
@@ -28263,12 +28302,13 @@
 
         module.exports = GameStateController;
 
-    }, {'./utils/GameStateEnums': 458,
+    }, {'./utils/GameStateEnums': 459,
             'rxjs': 10}
     ],
 456: [
         function(require, module, exports) {
         const ActionRegistry = require('./ActionRegistry');
+        const ActionHistoryUtil = require('./utils/ActionHistory');
         const ActionEvent = require('./utils/ActionEvent');
         const Rx = require('rxjs/Rx');
 
@@ -28300,11 +28340,14 @@
      */
                 constructor(DOMElement = document, bindings = {}, identifiers = {}) {
 
-                // define which identifiers will be used
+                // define which identifiers will be used // todo: get rid of it
                 const {
                     userID,
                     sessionID
                 } = identifiers;
+
+                // flags // todo: switch identifiers for flags
+                this._emitActions = true;
 
                 // init action registry
                 this.actionRegistry = new ActionRegistry(bindings);
@@ -28338,7 +28381,7 @@
                     buttonEvent => {
 
                         // create action event
-                        const evt = new ActionEvent({
+                        const evt = new ActionEvent({// todo: modify binding to 1:1
                             actions: this.actionRegistry.getActionsForKey(buttonEvent.key),
                             boundKey: buttonEvent.key,
                             type: buttonEvent.type,
@@ -28347,9 +28390,58 @@
                         });
 
                         // emit action event
-                        this._actionObservable.next(evt);
+                        if (this._emitActions) this._actionObservable.next(evt);
                     }
                 );
+
+
+                // init action history observer
+                this.actionHistory = new ActionHistoryUtil(this._actionObservable);
+            }
+
+            /**
+     * Toggles whether inputs are emitted;
+     */
+                toggleEmissions() {
+                this._emitActions = !this._emitActions;
+            }
+
+            /**
+     * Toggles whether inputs are saved in input history;
+     */
+                toggleRecording() {
+
+            }
+
+            /**
+     * Starts session and timer. Turns on both emissions and recording, if not already on.
+     * Assumes song timer is at zero.
+     */
+                startSession() {
+                this.actionHistory.startSession();
+            }
+
+            /**
+     * Terminates session and returns array of action events recorded.
+     *
+     * @returns {Array<ActionEvent>} all action events recorded.
+     */
+                terminateSession() {
+                return this.actionHistory.terminateSession();
+            }
+
+            /**
+     * Pauses recording and timer, if session is ongoing.
+     */
+                pauseSession() {
+                this.actionHistory.pauseSession();
+            }
+
+            /**
+     * Resumes recording and timer, if session is ongoing.
+     */
+                resumeSession() {
+                this.actionHistory.resumeSession();
             }
 
             /**
@@ -28399,6 +28491,7 @@
 
     }, {'./ActionRegistry': 453,
             './utils/ActionEvent': 457,
+            './utils/ActionHistory': 458,
             'rxjs/Rx': 10}
     ],
 457: [
@@ -28456,7 +28549,7 @@
                 if (timestamp) {
                         this._timestamp = timestamp;
                     } else {
-                        this._timestamp = new Date();
+                        this._timestamp = Date.now();
                     }
 
                 // assign to object properties
@@ -28498,6 +28591,14 @@
      */
                 get timestamp() {
                 return this._timestamp;
+            }
+
+            /**
+     * Sets timestamp to new value
+     * @param newTime
+     */
+                set timestamp(newTime) {
+                this._timestamp = newTime;
             }
 
             /**
@@ -28554,13 +28655,145 @@
     ],
 458: [
         function(require, module, exports) {
+        const DEFAULT_DELAY_MS = 350;
+
+        /**
+ * Utility that keeps track of all actions recorded and saves them
+ * with timestamp relative to start of session, allowing for ease of
+ * synchronization with song.
+ */
+        class ActionHistoryUtil {
+
+                constructor(actionObservable, delayMs = DEFAULT_DELAY_MS) {
+
+                if (!actionObservable) throw new Error('No action stream. Must pass a reference to action observable.');
+
+                this._actionHistory = [];
+                this._recordActions = false;
+                this._sessionStarted = false;
+                this._initialTime = -1;
+                this._pauseOffset = 0; // should be zero until there's a pause event
+                this._actionStream = actionObservable;
+                this._delayMs = delayMs;
+
+                this.onNewActionEvent = this.onNewActionEvent.bind(this);
+
+                // subscribe to update values
+                this._actionStream
+                    .filter(() => this._recordActions)
+                    .subscribe(actionEvent => this.onNewActionEvent(actionEvent));
+
+            }
+
+            /**
+     * Initializes timer, and allows for recording of sessions.
+     * Can only be performed if session has not started.
+     *
+     * Warning: previous history is reset with this action.
+     */
+                startSession() {
+                if (this._sessionStarted) {
+                        console.error('Session currently running. Must terminate before starting.');
+                    } else {
+                        this._recordActions = true;
+                        this._sessionStarted = true;
+                        this._initialTime = Date.now();
+                        this._actionHistory = [];
+                    }
+            }
+
+            /**
+     * Terminates session, resets timer and stops recording actions.
+     *
+     * @returns {Array} session history or null if session has not started
+     */
+                terminateSession() {
+                if (this._sessionStarted) {
+                        this._recordActions = false;
+                        this._sessionStarted = false;
+                        this._initialTime = -1;
+
+                        return this._actionHistory;
+                    }
+                console.error('Cannot terminate session that has not started.');
+
+                return null;
+            }
+
+            /**
+     * Function for handling the subscription to the stream of actions.
+     *
+     * @param {ActionEvent} actionEvent action event coming from stream
+     */
+                onNewActionEvent(actionEvent) {
+
+
+                // set action event time to relative time
+                actionEvent.timestamp = actionEvent.timestamp - this._initialTime + this._pauseOffset - this._delayMs;
+                console.log('Recorded timestamp', actionEvent.timestamp);
+
+                // save in history
+                this._actionHistory.push(actionEvent);
+
+            }
+
+            /**
+     *  Pauses recording of actions. Relative time is preserved.
+     */
+                pauseSession() {
+
+                if (this._recordActions) {
+
+                    // always accumulate pause offset
+                    // const lastTimestamp = this._actionHistory[this._actionHistory.length];
+
+                        this._pauseOffset += Date.now() - this._initialTime;
+                        this._recordActions = false;
+
+                    } else console.error('Session already paused.');
+
+            }
+
+            /**
+     *  Adapts timer and resumes session.
+     */
+                resumeSession() {
+
+                if (this._recordActions) {
+                        console.error('Cannot resume an unpaused session.');
+                    } else {
+
+                        this._recordActions = true;
+                        this._initialTime = Date.now();
+
+                    }
+
+            }
+
+            /**
+     * Getter for history of actions.
+     * @returns {[]|Array} array containing all action event objects collected so far
+     */
+                get history() {
+                return this._actionHistory;
+            }
+
+        }
+
+        module.exports = ActionHistoryUtil;
+
+    }, {}
+    ],
+459: [
+        function(require, module, exports) {
         // define possible states
         const GameStateEnums = Object.freeze({
                 'IDLE': 'IDLE',
                 'GENERATE': 'GENERATE',
                 'PLAY': 'PLAY',
                 'PAUSE': 'PAUSE',
-                'ERROR': 'ERROR'
+                'ERROR': 'ERROR',
+                'SCORE_CHANGED': 'SCORE_CHANGED'
             });
 
         module.exports = GameStateEnums;

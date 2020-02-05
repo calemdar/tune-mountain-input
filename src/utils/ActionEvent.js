@@ -50,7 +50,7 @@ class ActionEvent {
         if (timestamp) {
             this._timestamp = timestamp;
         } else {
-            this._timestamp = new Date();
+            this._timestamp = Date.now();
         }
 
         // assign to object properties
@@ -92,6 +92,14 @@ class ActionEvent {
      */
     get timestamp() {
         return this._timestamp;
+    }
+
+    /**
+     * Sets timestamp to new value
+     * @param newTime
+     */
+    set timestamp(newTime) {
+        this._timestamp = newTime;
     }
 
     /**

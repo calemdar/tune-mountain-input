@@ -1,4 +1,5 @@
 const ActionRegistry = require('./ActionRegistry');
+const ActionHistoryUtil = require('./utils/ActionHistory');
 const ActionEvent = require('./utils/ActionEvent');
 const Rx = require('rxjs/Rx');
 
@@ -30,11 +31,14 @@ class Manager {
      */
     constructor(DOMElement = document, bindings = {}, identifiers = {}) {
 
-        // define which identifiers will be used
+        // define which identifiers will be used // todo: get rid of it
         const {
             userID,
             sessionID
         } = identifiers;
+
+        // flags // todo: switch identifiers for flags
+        this._emitActions = true;
 
         // init action registry
         this.actionRegistry = new ActionRegistry(bindings);
@@ -68,7 +72,7 @@ class Manager {
             buttonEvent => {
 
                 // create action event
-                const evt = new ActionEvent({
+                const evt = new ActionEvent({// todo: modify binding to 1:1
                     actions: this.actionRegistry.getActionsForKey(buttonEvent.key),
                     boundKey: buttonEvent.key,
                     type: buttonEvent.type,
@@ -77,9 +81,58 @@ class Manager {
                 });
 
                 // emit action event
-                this._actionObservable.next(evt);
+                if (this._emitActions) this._actionObservable.next(evt);
             }
         );
+
+
+        // init action history observer
+        this.actionHistory = new ActionHistoryUtil(this._actionObservable);
+    }
+
+    /**
+     * Toggles whether inputs are emitted;
+     */
+    toggleEmissions() {
+        this._emitActions = !this._emitActions;
+    }
+
+    /**
+     * Toggles whether inputs are saved in input history;
+     */
+    toggleRecording() {
+
+    }
+
+    /**
+     * Starts session and timer. Turns on both emissions and recording, if not already on.
+     * Assumes song timer is at zero.
+     */
+    startSession() {
+        this.actionHistory.startSession();
+    }
+
+    /**
+     * Terminates session and returns array of action events recorded.
+     *
+     * @returns {Array<ActionEvent>} all action events recorded.
+     */
+    terminateSession() {
+        return this.actionHistory.terminateSession();
+    }
+
+    /**
+     * Pauses recording and timer, if session is ongoing.
+     */
+    pauseSession() {
+        this.actionHistory.pauseSession();
+    }
+
+    /**
+     * Resumes recording and timer, if session is ongoing.
+     */
+    resumeSession() {
+        this.actionHistory.resumeSession();
     }
 
     /**
