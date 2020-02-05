@@ -4,16 +4,8 @@
 This class defines the packet that contains the ActionEvent
 that is emitted when a button is pressed.
 
-An event will contain an array of actions (Strings) and a key that was bound to it at
-the time the action was performed. The event also contains the timestamp of when said action was performed.
-
-This class has the following fields that can be publicly accessed:
-     actions: Array<String>  -> actions that are being done
-     boundKey: String        -> key bound to said actions that was pressed
-     type: String            -> either "up" or "down"
-     timestamp: Date         -> when key was pressed (optional)
-     sessionID: String       -> Identifier for the current play session (optional)
-     userID: String          -> Identifier for use (Spotify in Tune Mountain) (optional)
+An event will contain an encapsulate an action, the key bound to it at the time of pressing, and the time in which it was pressed.
+The type of press can be either "press" or "release"
 
 **Kind**: global class  
 
@@ -24,10 +16,6 @@ This class has the following fields that can be publicly accessed:
     * [.type](#ActionEvent+type) ⇒ <code>String</code>
     * [.timestamp](#ActionEvent+timestamp) ⇒ <code>Date</code>
     * [.timestamp](#ActionEvent+timestamp)
-    * [.sessionID](#ActionEvent+sessionID) ⇒ <code>\*</code>
-    * [.sessionID](#ActionEvent+sessionID)
-    * [.userID](#ActionEvent+userID) ⇒ <code>\*</code>
-    * [.userID](#ActionEvent+userID)
     * [.toString()](#ActionEvent+toString) ⇒ <code>String</code>
 
 <a name="new_ActionEvent_new"></a>
@@ -38,10 +26,8 @@ Instantiates an action event.
 Properties may contain:
      actions: Array<String> -> actions that are being done
      boundKey: String -> key bound to said actions that was pressed
-     type: String -> either "up" or "down"
-     timestamp: Date -> when key was pressed (optional)
-     sessionID: String -> Identifier for the current play session (optional)
-     userID: String -> Identifier for use (Spotify in Tune Mountain) (optional)
+     type: String -> either "press" or "release"
+     timestamp: Date.now() when key was pressed
 
 Optional properties may be added using setter functions, with the exception of the timestamp.
 
@@ -87,40 +73,6 @@ Sets timestamp to new value
 | Param |
 | --- |
 | newTime | 
-
-<a name="ActionEvent+sessionID"></a>
-
-### actionEvent.sessionID ⇒ <code>\*</code>
-Returns the session ID where this action was performed.
-
-**Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
-<a name="ActionEvent+sessionID"></a>
-
-### actionEvent.sessionID
-Defines the session ID for the current action.
-
-**Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
-
-| Param | Description |
-| --- | --- |
-| id | the ID of the sessions |
-
-<a name="ActionEvent+userID"></a>
-
-### actionEvent.userID ⇒ <code>\*</code>
-Returns the user ID of the user that performed the action.
-
-**Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
-<a name="ActionEvent+userID"></a>
-
-### actionEvent.userID
-Sets an ID for the user that performed the action.
-
-**Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
-
-| Param |
-| --- |
-| value | 
 
 <a name="ActionEvent+toString"></a>
 
