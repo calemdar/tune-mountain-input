@@ -135,9 +135,7 @@ class Manager {
     }
 
     /**
-     * @deprecated use setBinding() for same effect
      *
-     * ## THIS FUNCTION IS NOW REDUNDANT ##
      * Binds one action to a given key. If key already has an action bound
      * to it, it replaces the action to the existing actions.
      *
@@ -151,6 +149,7 @@ class Manager {
     }
 
     /**
+     * @deprecated
      * Binds an array of actions to a given key.
      * WARNING: this will erase all previous bindings.
      *
