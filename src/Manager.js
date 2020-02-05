@@ -98,13 +98,6 @@ class Manager {
     }
 
     /**
-     * Toggles whether inputs are saved in input history;
-     */
-    toggleRecording() {
-
-    }
-
-    /**
      * Starts session and timer. Turns on both emissions and recording, if not already on.
      * Assumes song timer is at zero.
      */
