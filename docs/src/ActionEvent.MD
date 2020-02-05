@@ -8,15 +8,22 @@ An event will contain an array of actions (Strings) and a key that was bound to 
 the time the action was performed. The event also contains the timestamp of when said action was performed.
 
 This class has the following fields that can be publicly accessed:
+     actions: Array<String>  -> actions that are being done
+     boundKey: String        -> key bound to said actions that was pressed
+     type: String            -> either "up" or "down"
+     timestamp: Date         -> when key was pressed (optional)
+     sessionID: String       -> Identifier for the current play session (optional)
+     userID: String          -> Identifier for use (Spotify in Tune Mountain) (optional)
 
 **Kind**: global class  
 
 * [ActionEvent](#ActionEvent)
     * [new ActionEvent(properties)](#new_ActionEvent_new)
-    * [.actions](#ActionEvent+actions) ⇒ <code>Array.&lt;String&gt;</code>
+    * [.action](#ActionEvent+action) ⇒ <code>String</code>
     * [.boundKey](#ActionEvent+boundKey) ⇒ <code>String</code>
     * [.type](#ActionEvent+type) ⇒ <code>String</code>
     * [.timestamp](#ActionEvent+timestamp) ⇒ <code>Date</code>
+    * [.timestamp](#ActionEvent+timestamp)
     * [.sessionID](#ActionEvent+sessionID) ⇒ <code>\*</code>
     * [.sessionID](#ActionEvent+sessionID)
     * [.userID](#ActionEvent+userID) ⇒ <code>\*</code>
@@ -29,13 +36,12 @@ This class has the following fields that can be publicly accessed:
 Instantiates an action event.
 
 Properties may contain:
-
-     actions: Array<String>     // actions that are being done
-     boundKey: String           // key bound to said actions that was pressed
-     type: String               // either "up" or "down"
-     timestamp: Date            // when key was pressed (optional)
-     sessionID: String          // Identifier for the current play session (optional)
-     userID: String             // Identifier for use (Spotify in Tune Mountain) (optional)
+     actions: Array<String> -> actions that are being done
+     boundKey: String -> key bound to said actions that was pressed
+     type: String -> either "up" or "down"
+     timestamp: Date -> when key was pressed (optional)
+     sessionID: String -> Identifier for the current play session (optional)
+     userID: String -> Identifier for use (Spotify in Tune Mountain) (optional)
 
 Optional properties may be added using setter functions, with the exception of the timestamp.
 
@@ -44,13 +50,13 @@ Optional properties may be added using setter functions, with the exception of t
 | --- | --- |
 | properties | object containing event properties (see description). |
 
-<a name="ActionEvent+actions"></a>
+<a name="ActionEvent+action"></a>
 
-### actionEvent.actions ⇒ <code>Array.&lt;String&gt;</code>
+### actionEvent.action ⇒ <code>String</code>
 Returns an array of actions performed.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
-**Returns**: <code>Array.&lt;String&gt;</code> - all actions performed  
+**Returns**: <code>String</code> - all actions performed  
 <a name="ActionEvent+boundKey"></a>
 
 ### actionEvent.boundKey ⇒ <code>String</code>
@@ -71,6 +77,17 @@ Returns the type of key press (either 'up' or 'down', or as defined inside Manag
 Returns a Date object. Represents the time and date the action was performed.
 
 **Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
+<a name="ActionEvent+timestamp"></a>
+
+### actionEvent.timestamp
+Sets timestamp to new value
+
+**Kind**: instance property of [<code>ActionEvent</code>](#ActionEvent)  
+
+| Param |
+| --- |
+| newTime | 
+
 <a name="ActionEvent+sessionID"></a>
 
 ### actionEvent.sessionID ⇒ <code>\*</code>

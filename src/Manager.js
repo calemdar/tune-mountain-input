@@ -26,18 +26,11 @@ class Manager {
      * attaches it to entire document.
      * @param {Node} DOMElement the desired element
      * @param {Object} bindings map of key values to an array of actions
-     * @param {Object} identifiers object containing the ids that will be used for this manager (i.e. userID, sessionID,
      * etc)
      */
-    constructor(DOMElement = document, bindings = {}, identifiers = {}) {
+    constructor(DOMElement = document, bindings = {}) {
 
-        // define which identifiers will be used // todo: get rid of it
-        const {
-            userID,
-            sessionID
-        } = identifiers;
-
-        // flags // todo: switch identifiers for flags
+        // flags
         this._emitActions = true;
 
         // init action registry
@@ -75,9 +68,7 @@ class Manager {
                 const evt = new ActionEvent({// todo: modify binding to 1:1
                     actions: this.actionRegistry.getActionsForKey(buttonEvent.key),
                     boundKey: buttonEvent.key,
-                    type: buttonEvent.type,
-                    userID,
-                    sessionID
+                    type: buttonEvent.type
                 });
 
                 // emit action event
@@ -144,15 +135,18 @@ class Manager {
     }
 
     /**
-     * Binds one or more actions to a given key. If key already has one or more actions bound
-     * to it, it appends the action to the existing actions.
+     * @deprecated use setBinding() for same effect
+     *
+     * ## THIS FUNCTION IS NOW REDUNDANT ##
+     * Binds one action to a given key. If key already has an action bound
+     * to it, it replaces the action to the existing actions.
      *
      * @param {String} key the value of a key as defined in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param {Array<String>} action one (String) or more (Array<String>) actions to be bound to the key
+     * @param {String} action to be bound to key
      */
     bindAction(key, action) {
 
-        this.actionRegistry.bindActionToKey(key, action);
+        this.actionRegistry.setBindingTo(key, action);
 
     }
 
@@ -161,11 +155,11 @@ class Manager {
      * WARNING: this will erase all previous bindings.
      *
      * @param {String} key the value of a key as defined in https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param {Array<String>} actions an array of actions to be bound
+     * @param {String} action an array of actions to be bound
      */
-    setBinding(key, actions) {
+    setBinding(key, action) {
 
-        this.actionRegistry.setBindingTo(key, actions)
+        this.actionRegistry.setBindingTo(key, action)
 
     }
 

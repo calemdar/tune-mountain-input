@@ -33,16 +33,14 @@ class ActionEvent {
     constructor (properties = {}) {
 
         const {
-            actions,
+            action,
             boundKey,
             type,
-            timestamp,
-            sessionID,
-            userID
+            timestamp
         } = properties;
 
         // if required props aren't passed, throw error
-        if (!actions || !boundKey || !type) {
+        if (!action || !boundKey || !type) {
             throw new Error('No \'actions\', \'boundKey\', or \'type\' passed to ActionEvent during instantiation!');
         }
 
@@ -54,20 +52,18 @@ class ActionEvent {
         }
 
         // assign to object properties
-        this._actions = actions;
+        this._action = action;
         this._boundKey = boundKey;
         this._type = type;
-        this._sessionID = sessionID;
-        this._userID = userID;
 
     }
 
     /**
      * Returns an array of actions performed.
-     * @returns {Array<String>} all actions performed
+     * @returns {String} all actions performed
      */
-    get actions() {
-        return this._actions;
+    get action() {
+        return this._action;
     }
 
     /**

@@ -28,8 +28,12 @@ class ActionRegistry {
     }
 
     /**
+     * @deprecated No longer applies to current way of doing things.
+     *
      * Adds a action to a key binding. If the key is not bound yet, then it
      * adds key to register and binds action to it.
+     *
+     * No longer works as binding is now 1:1
      *
      * @see setBindingTo()
      * @see checkBindingOf()
@@ -38,6 +42,8 @@ class ActionRegistry {
      * @param {Array<String>} actionOrActionArray a string or an array of strings describing the action
      */
     bindActionToKey(keyValue, actionOrActionArray) {
+
+        console.error('Warning: deprecated function. Definition of key binding has changed. See documentation.');
 
         const binding = this.bindings[keyValue];
 
@@ -59,20 +65,20 @@ class ActionRegistry {
     }
 
     /**
-     * Replaces current binding with the action array
+     * Replaces current binding with new action
      * @param keyValue {String} value of key, described in
      * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values
-     * @param actionArray {Array} an array of actions (Strings)
+     * @param action {String} new action to bind
      */
-    setBindingTo(keyValue, actionArray) {
+    setBindingTo(keyValue, action) {
 
-        this.bindings[keyValue] = actionArray;
+        this.bindings[keyValue] = action;
 
     }
 
     /**
-     * Returns an array of values for a given key, or null if no actions are bound to it.
-     * @param keyValue
+     * Returns action bound to key, or null if no actions are bound to it.
+     * @param keyValue value to map to
      */
     getActionsForKey(keyValue) {
 

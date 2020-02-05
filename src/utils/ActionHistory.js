@@ -115,7 +115,7 @@ class ActionHistoryUtil {
 
     /**
      * Getter for history of actions.
-     * @returns {[]|Array} array containing all action event objects collected so far
+     * @returns {Array<ActionEvent>} array containing all action event objects collected so far
      */
     get history() {
         return this._actionHistory;
