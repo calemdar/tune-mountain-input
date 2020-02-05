@@ -55,18 +55,17 @@ You may create an input manager instance and bind actions to it using the follow
 // instantiate manager and bind it to the DOM
 const manager = new InputManager();
 
-// bind one or more actions (appends to existing actions)
+// bind action
 manager.bindAction('a', 'Action1');
-manager.bindAction('a', 'Action2');
-// if the key 'a' is pressed, 'Action1' and 'Action2' will be emitted
 
-// reset bindings to an array of new actions
-manager.setBinding('a', ['Action3']);
-// if the key 'a' is pressed, only 'Action3' will be emitted
+// replace action
+manager.bindAction('a', 'Action2');
+// if the key 'a' is pressed,  ony 'Action2' will be emitted
 
 // to unbind an action simply run
-manager.setBinding('a', null);
+manager.bindAction('a', null);
 // if the key 'a' is pressed, nothing will be emitted
+
 ```
 
 In order to handle an action event you may create an observer by subscribing to the action observable. See example
@@ -87,9 +86,7 @@ If any of the bound keys are pressed, the action object will be printed to the c
 ActionEvent: {
     'type': press
     'actions': Jump
-    'timestamp': 'Mon Sep 09 2019 01:15:17 GMT-0400 (Eastern Daylight Time)'
-    'userID': undefined
-    'sessionID': undefined
+    'timestamp': 312344
 }
 
 ```
@@ -98,6 +95,8 @@ Please see [ActionEvent.js](./src/utils/ActionEvent.js) or [ActionEvent.js docum
  how to
  access the fields inside the
  `ActionEvent` object that is emitted by the observable.
+ 
+**Note**: Action Events acquired from the [Action Event History](./docs/src/ActionHistory.MD) have a different meaning to the timestamp field -- the field represents the time elapsed since the song started. The timestamp acquired from the observable is simply the result of Date.now() run as soon as the key is pressed.
  
 **Note**: You may also initialize the input manager with a series of bindings and 
 a `userID` and `sessionID` values for identification. See [Manager.js](./src/Manager.js) or [Manager.js documentation](./docs/src/Manager.MD) for details on the
@@ -164,7 +163,8 @@ const GameStateEnums = {
     'GENERATE': 'GENERATE',
     'PLAY': 'PLAY',
     'PAUSE': 'PAUSE',
-    'ERROR': 'ERROR'
+    'ERROR': 'ERROR',
+    'SCORE_CHANGED': 'SCORE_CHANGED'
 };
 ```
 
