@@ -79,6 +79,7 @@ class ActionRegistry {
     /**
      * Returns action bound to key, or null if no actions are bound to it.
      * @param keyValue value to map to
+     * @returns {String} action
      */
     getActionsForKey(keyValue) {
 
