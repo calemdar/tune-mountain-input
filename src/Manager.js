@@ -66,7 +66,7 @@ class Manager {
 
                 // create action event
                 const evt = new ActionEvent({// todo: modify binding to 1:1
-                    actions: this.actionRegistry.getActionsForKey(buttonEvent.key),
+                    action: this.actionRegistry.getActionsForKey(buttonEvent.key),
                     boundKey: buttonEvent.key,
                     type: buttonEvent.type
                 });
