@@ -35,6 +35,15 @@ class ReplayUtil {
     }
 
     /**
+     * Getter to determine if replay util is currently replaying.
+     *
+     * @returns {boolean} true if timeout is ongoing, false if timeout has been cleared.
+     */
+    get isReplaying() {
+        return !!this.currentTimeout;
+    }
+
+    /**
      * Emits event at index, and if there is a next move, set an appropriate
      * timeout for said move.
      *
@@ -72,6 +81,7 @@ class ReplayUtil {
 
             // if not, call the end function
             this.onEndOfInputs();
+            this.terminateReplay();
 
         }
 

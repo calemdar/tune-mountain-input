@@ -90,7 +90,7 @@ class Manager {
     }
 
     /**
-     * Toggles whether inputs are emitted;
+     * Toggles whether real time user inputs are emitted; Replay is not affected by this flag.
      */
     toggleEmissions() {
         this._emitActions = !this._emitActions;
@@ -101,6 +101,9 @@ class Manager {
      * Assumes song timer is at zero.
      */
     startSession() {
+        // check if there is an ongoing replay. if so, throw error
+        if (this.replayUtility.isReplaying) throw new Error('Cannot start recording session if actions are being replayed!');
+
         this.actionHistory.startSession();
     }
 
@@ -135,9 +138,6 @@ class Manager {
 
         // pass array to instance of replay util
         this.replayUtility.loadActions(inputArray);
-
-        // check if there is an ongoing session. if so, throw error
-        if (this.actionHistory.sessionStarted) throw new Error('cannot replay if actions are being recorded!');
 
     }
 
