@@ -1,5 +1,6 @@
 const ActionRegistry = require('./ActionRegistry');
 const ActionHistoryUtil = require('./utils/ActionHistory');
+const ActionReplayUtil = require('./utils/ReplayUtil');
 const ActionEvent = require('./utils/ActionEvent');
 const Rx = require('rxjs/Rx');
 
@@ -65,20 +66,27 @@ class Manager {
             buttonEvent => {
 
                 // create action event
-                const evt = new ActionEvent({// todo: modify binding to 1:1
+                const evt = new ActionEvent({
                     action: this.actionRegistry.getActionsForKey(buttonEvent.key),
                     boundKey: buttonEvent.key,
                     type: buttonEvent.type
                 });
 
-                // emit action event
+                // emit action event from pressed key
                 if (this._emitActions) this._actionObservable.next(evt);
             }
         );
 
+        // for allowing normal emissions when replay ends
+        const handleEndOfReplay = () => {
+            this._emitActions = true;
+        };
 
         // init action history observer
         this.actionHistory = new ActionHistoryUtil(this._actionObservable);
+        // init replay utility
+        this.replayUtility = new ActionReplayUtil(action => this._actionObservable.next(action), handleEndOfReplay);
+
     }
 
     /**
@@ -117,6 +125,52 @@ class Manager {
      */
     resumeSession() {
         this.actionHistory.resumeSession();
+    }
+
+    /**
+     * Loads inputs for initializing a replay session.
+     * @param {Array<ActionEvent>} inputArray array of action event objects
+     */
+    loadInputsForReplay(inputArray) {
+
+        // pass array to instance of replay util
+        this.replayUtility.loadActions(inputArray);
+
+        // check if there is an ongoing session. if so, throw error
+        if (this.actionHistory.sessionStarted) throw new Error('cannot replay if actions are being recorded!');
+
+    }
+
+    /**
+     * Pauses regular emission of user inputs and begins streaming
+     * loaded inputs as normal emissions.
+     */
+    beginReplaySession() {
+
+        // check if there is an ongoing session. if so, throw error. check if we're allowed to begin a replay
+        if (this.actionHistory.sessionStarted) throw new Error('cannot replay if actions are being recorded!');
+
+        // stop normal emissions
+        this._emitActions = false;
+
+        // begin chain of emissions
+        this.replayUtility.beginReplay();
+
+    }
+
+    /**
+     * Stops emission of replay inputs and restores normal emission
+     * of user inputs. Loaded inputs are not cleared in this step.
+     *
+     */
+    terminateReplaySession() {
+
+        // disable replay mode
+        this.replayUtility.terminateReplay();
+
+        // start normal emissions
+        this._emitActions = true;
+
     }
 
     /**

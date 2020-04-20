@@ -30,8 +30,8 @@ class ActionEvent {
         } = properties;
 
         // if required props aren't passed, throw error
-        if (!action || !boundKey || !type) {
-            throw new Error('No \'actions\', \'boundKey\', or \'type\' passed to ActionEvent during instantiation!');
+        if (!action || !type) {
+            throw new Error(`No 'action' or 'type' passed to ActionEvent during instantiation! Action: ${action}, Type: ${type}`);
         }
 
         // set current date if no timestamp is passed
@@ -74,7 +74,7 @@ class ActionEvent {
 
     /**
      * Returns a Date object. Represents the time and date the action was performed.
-     * @returns {Date}
+     * @returns {Number}
      */
     get timestamp() {
         return this._timestamp;
@@ -95,7 +95,7 @@ class ActionEvent {
     toString() {
         return `ActionEvent: {
     'type': ${this._type}
-    'actions': ${this._actions}
+    'actions': ${this._action}
     'timestamp': ${this._timestamp}
 }`
     }

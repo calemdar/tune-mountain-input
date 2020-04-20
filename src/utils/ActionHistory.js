@@ -29,6 +29,14 @@ class ActionHistoryUtil {
     }
 
     /**
+     * Asserts whether a session is already ongoing.
+     * @returns {boolean}
+     */
+    get sessionStarted() {
+        return this._sessionStarted;
+    }
+
+    /**
      * Initializes timer, and allows for recording of sessions.
      * Can only be performed if session has not started.
      *
