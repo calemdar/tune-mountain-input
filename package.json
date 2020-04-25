@@ -31,6 +31,7 @@
     "express": "^4.17.1",
     "http": "0.0.0",
     "jsdoc-to-markdown": "^5.0.1",
+    "node-fetch": "^2.6.0",
     "path": "^0.12.7",
     "watchify": "^3.11.1"
   }
